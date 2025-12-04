@@ -1,0 +1,191 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+	/* =========================================
+	   COLOR PALETTE
+	   ========================================= */
+	--color-dark: rgb(20, 24, 30);
+	--color-light: rgb(242, 250, 255);
+
+	/* Tech Blue (Primary) */
+	--color-primary-light: rgb(128, 204, 255);
+	--color-primary: rgb(0, 153, 255);
+	--color-primary-hover: rgb(0, 133, 235);
+	--color-primary-active: rgb(0, 113, 215);
+
+	/* Teal (Accent) */
+	--color-accent: rgb(0, 204, 190);
+	--color-accent-hover: rgb(0, 184, 170);
+	--color-accent-active: rgb(0, 164, 150);
+}
+
+@layer components {
+	/* =========================================
+	   TYPOGRAPHY CONFIG (.prose-tech)
+	   ========================================= */
+	.prose-tech {
+		@apply prose prose-gray max-w-none;
+
+		/* Text Sizes & Leading */
+		@apply prose-headings:font-bold;
+		@apply prose-h1:text-4xl prose-h1:tracking-tight;
+		@apply prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6;
+		@apply prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4;
+		@apply prose-p:text-lg prose-p:leading-8 prose-p:text-gray-600 dark:prose-p:text-gray-300;
+		@apply prose-li:text-lg prose-li:text-gray-600 dark:prose-li:text-gray-300;
+
+		/* Inline Code (`const x = 1`) */
+		:where(code):not(:where([class~="not-prose"] *, pre *)) {
+			@apply px-1.5 py-0.5 rounded-md bg-gray-100 text-primary font-medium text-[0.9em] border border-gray-200;
+			@apply dark:bg-gray-800 dark:text-primary-light dark:border-gray-700;
+		}
+		/* Remove auto-quotes from inline code */
+		:where(code):not(:where([class~="not-prose"] *, pre *))::before,
+		:where(code):not(:where([class~="not-prose"] *, pre *))::after {
+			content: "";
+		}
+
+		/* Link Colors */
+		--tw-prose-links: var(--color-primary);
+		--tw-prose-headings: var(--color-dark);
+
+		/* Dark Mode Overrides for Prose */
+		@variant dark {
+			--tw-prose-body: rgb(209, 213, 219);
+			--tw-prose-headings: rgb(255, 255, 255);
+			--tw-prose-links: var(--color-primary-light);
+			--tw-prose-bold: rgb(255, 255, 255);
+			--tw-prose-hr: rgb(55, 65, 81);
+		}
+
+		/* =========================================
+   SHIKI CODE BLOCK STYLING
+   ========================================= */
+
+		/* Base Setup & Line Counters */
+		pre.shiki {
+			@apply m-0 overflow-x-auto bg-transparent p-0 text-[13.5px] leading-6 font-mono;
+			counter-reset: line; /* Start the counter */
+		}
+
+		pre.shiki code {
+			display: block;
+			width: max-content;
+			min-width: 100%;
+			background: transparent;
+		}
+
+		/* The Line (Targeting the span.line we created in vite.config) */
+		pre.shiki .line {
+			display: inline-block;
+			width: 100%;
+			padding: 0 1.5rem;
+			min-height: 1.5rem;
+		}
+
+		/* The Number (Pseudo-element) */
+		/* Only show if the wrapper has 'line-numbers-enabled' */
+		.line-numbers-enabled pre.shiki .line {
+			padding-left: 0.5rem; /* Reduce padding to make room for number */
+		}
+
+		.line-numbers-enabled pre.shiki .line::before {
+			counter-increment: line;
+			content: counter(line);
+
+			/* Styling the number */
+			@apply inline-block w-8 mr-4 text-right text-gray-600  select-none text-[12px] font-mono;
+			@apply dark:text-gray-300;
+		}
+
+		/* Dual theme color */
+
+		/* Force Light Mode Color */
+		html:not(.dark) .shiki,
+		html:not(.dark) .shiki span {
+			color: var(--s-light);
+			background-color: transparent;
+		}
+
+		/* Force Dark Mode Color */
+		html.dark .shiki,
+		html.dark .shiki span {
+			color: var(--s-dark);
+			background-color: transparent;
+		}
+
+		/* Highlighted Lines (Shiki Transformer Meta Highlight) */
+		pre.shiki .line.highlighted {
+			@apply bg-primary/10 border-l-2 border-primary;
+			padding-left: calc(0.5rem - 2px); /* Compensate for border */
+		}
+		pre.shiki .line.highlighted::before {
+			@apply text-primary/70 font-bold;
+		}
+
+		/* Wrapper Overrides */
+		:not(.code-block-wrapper) > pre.shiki {
+			@apply my-8 rounded-2xl border border-gray-200 bg-[#f6f8fa] py-4;
+			@apply dark:border-gray-800 dark:bg-[#0d1117];
+		}
+
+		.code-block-wrapper pre.shiki {
+			background: transparent;
+			border: none;
+			box-shadow: none;
+			padding-top: 0rem;
+			padding-bottom: 0rem;
+		}
+	}
+
+	/* Anchor Link Styling (#) */
+	.header-anchor {
+		@apply ml-2 text-primary/0 no-underline transition-colors duration-200;
+	}
+	h2:hover .header-anchor,
+	h3:hover .header-anchor {
+		@apply text-primary/50;
+	}
+}
+
+/* =========================================
+   GLOBAL SHIKI THEME LOGIC
+   ========================================= */
+
+/* Light Mode */
+html:not(.dark) .shiki,
+html:not(.dark) .shiki span {
+	background-color: transparent;
+	color: var(--s-light);
+}
+
+/* Dark Mode */
+html.dark .shiki,
+html.dark .shiki span {
+	background-color: transparent;
+	color: var(--s-dark);
+}
+
+/* =========================================
+   VIEW TRANSITIONS & BASE
+   ========================================= */
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation: none;
+	mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+	z-index: 2147483646;
+}
+
+body {
+	@apply transition-colors duration-300;
+}
+
+html.dark body {
+	background-color: var(--color-dark);
+	color: rgb(229, 231, 235);
+}
