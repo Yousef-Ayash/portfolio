@@ -10,6 +10,10 @@ import Shiki from "@shikijs/markdown-it";
 import matter from "gray-matter";
 import { transformerMetaHighlight } from "@shikijs/transformers";
 
+// Import Node.js filesystem tools to scan for files
+import fs from "node:fs";
+import path from "node:path";
+
 // Helper to calculate minutes
 function getReadingTime(content) {
 	const wordsPerMinute = 200;
@@ -124,6 +128,70 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			"@": fileURLToPath(new URL("./src", import.meta.url)),
+		},
+	},
+	// SSG Config
+	ssgOptions: {
+		script: "async",
+		formatting: "minify",
+		// This function tells Vite-SSG which routes to build
+		includedRoutes(paths, routes) {
+			// Default routes (home, projects index, etc.)
+			const staticRoutes = paths.filter((p) => !p.includes(":") && !p.includes("404"));
+
+			const extraRoutes = [];
+
+			// Scan for Projects
+			const projectsDir = path.resolve(__dirname, "./src/markdown/projects");
+			if (fs.existsSync(projectsDir)) {
+				const files = fs.readdirSync(projectsDir);
+				files.forEach((file) => {
+					if (file.endsWith(".md")) {
+						const slug = file.replace(".md", "");
+						extraRoutes.push(`/projects/${slug}`);
+					}
+				});
+			}
+
+			// Scan for Blogs
+			const blogDir = path.resolve(__dirname, "./src/markdown/blog");
+			// Note: Depending on your folder structure you might need recursive scanning
+			// This is a simple scan assuming flat files for brevity
+			if (fs.existsSync(blogDir)) {
+				const files = fs.readdirSync(blogDir);
+				files.forEach((file) => {
+					if (file.endsWith(".md")) {
+						const slug = file.replace(".md", "");
+						extraRoutes.push(`/blog/${slug}`);
+					}
+				});
+			}
+
+			// Scan for Notes
+			const notesDir = path.resolve(__dirname, "./src/markdown/notes");
+			if (fs.existsSync(notesDir)) {
+				const files = fs.readdirSync(notesDir);
+				files.forEach((file) => {
+					if (file.endsWith(".md")) {
+						const slug = file.replace(".md", "");
+						extraRoutes.push(`/notes/${slug}`);
+					}
+				});
+			}
+
+			// Scan for Topics
+			const topicsDir = path.resolve(__dirname, "./src/markdown/topics");
+			if (fs.existsSync(topicsDir)) {
+				const files = fs.readdirSync(topicsDir);
+				files.forEach((file) => {
+					if (file.endsWith(".md")) {
+						const slug = file.replace(".md", "");
+						extraRoutes.push(`/topics/${slug}`);
+					}
+				});
+			}
+
+			return [...staticRoutes, ...extraRoutes, "/404"];
 		},
 	},
 });

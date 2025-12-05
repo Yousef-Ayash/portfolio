@@ -1,11 +1,7 @@
 <script setup>
-import { onMounted } from "vue";
-import { useBlogStore } from "@/stores/blogStore";
 import NavBar from "@/components/NavBar.vue";
 import CommandPalette from "@/components/CommandPalette.vue";
 import { useHead } from "@unhead/vue";
-
-const blogStore = useBlogStore();
 
 useHead({
 	title: "Yousef Ayash",
@@ -20,10 +16,6 @@ useHead({
 	htmlAttrs: {
 		lang: "en",
 	},
-});
-
-onMounted(() => {
-	blogStore.loadPosts();
 });
 </script>
 
