@@ -70,7 +70,9 @@ useHead({
 			</router-link>
 
 			<div class="mb-12 rounded-3xl bg-white p-8 shadow-lg dark:bg-gray-900/50 sm:p-12">
-				<div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+				<div
+					class="flex flex-col md:flex-row md:items-start md:justify-between gap-6 md:gap-0"
+				>
 					<div>
 						<div
 							class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary"

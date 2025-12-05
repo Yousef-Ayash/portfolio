@@ -40,4 +40,5 @@ combined_output.md
 .combineignore
 *_old.*
 *_new.*
+*.py
 README.md
