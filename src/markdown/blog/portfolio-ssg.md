@@ -4,11 +4,9 @@ description: "A crucial architectural shift for the Digital Garden: how we moved
 date: "2025-12-06"
 tags: ["Vue.js", "Vite-SSG", "Pinia", "Routing", "Node.js FS"]
 project: "portfolio"
+related:
+	- "theme-switching-fix"
 ---
-
-<script setup>
-import CodeBlock from '@/components/content/CodeBlock.vue'
-</script>
 
 ## The Architectural Necessity: From Client-Side Render to SSG
 
