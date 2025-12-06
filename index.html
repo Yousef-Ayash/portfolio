@@ -9,6 +9,23 @@
 			name="description"
 			content="Portfolio and digital garden of Yousef Ayash. Exploring Vue.js, Architecture, and Engineering."
 		/>
+		<script>
+			// Try getting preferred theme from
+			// local storage at visit
+			(() => {
+				try {
+					const saved = localStorage.getItem("theme");
+					const prefersDark =
+						window.matchMedia &&
+						window.matchMedia("(prefers-color-scheme: dark)").matches;
+					const theme = saved || (prefersDark ? "dark" : "light");
+					if (theme === "dark") document.documentElement.classList.add("dark");
+					else document.documentElement.classList.remove("dark");
+				} catch (e) {
+					// ignore
+				}
+			})();
+		</script>
 	</head>
 	<body>
 		<div id="app"></div>

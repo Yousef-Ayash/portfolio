@@ -5,6 +5,7 @@ import { routes } from "./router";
 import "./styles/main.css";
 import CodeBlock from "./components/content/CodeBlock.vue";
 import { useBlogStore } from "@/stores/blogStore";
+import { useThemeStore } from "./stores/themeStore";
 
 // Replace createApp with ViteSSG
 export const createApp = ViteSSG(
@@ -22,6 +23,14 @@ export const createApp = ViteSSG(
 		const pinia = createPinia();
 		app.use(pinia);
 		app.component("CodeBlock", CodeBlock);
+
+		const themeStore = useThemeStore();
+
+		// Determine if the change is from client to
+		// automatically hydrate on browser and initiate theme.
+		if (isClient) {
+			themeStore.initTheme();
+		}
 
 		// Load posts BEFORE app renders content during build process
 
