@@ -7,10 +7,6 @@ demoUrl: "https://yousef-ayash.netlify.app"
 repoUrl: "https://github.com/yousef-ayash/portfolio"
 ---
 
-<script setup>
-import CodeBlock from '@/components/content/CodeBlock.vue'
-</script>
-
 ## The Philosophy
 
 There are multiple ways I could create my personal website:
@@ -246,8 +242,4 @@ useHead({
 
 </CodeBlock>
 
-## So What's Next?
-
-This portfolio is a living project. Future plans include:
-
-- [ ] **SSG / SSR**: Since I am already using `@unhead/vue`, the next logical step is implementing pre-rendering (SSG) to generate static HTML for every route at build time.
+This portfolio is a living project.

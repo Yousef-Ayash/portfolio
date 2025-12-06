@@ -1,6 +1,6 @@
 import Home from "@/pages/Home.vue";
 
-// 1. Export the routes array specifically
+// Export the routes array specifically
 export const routes = [
 	{
 		path: "/",
