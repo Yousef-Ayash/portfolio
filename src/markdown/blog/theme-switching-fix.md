@@ -24,7 +24,7 @@ To fix this, we need a two-pronged approach: one script to handle the **visuals*
 
 ---
 
-## 1. Visual Restoration: The Head Script 👁️
+## 1. Visual Restoration: The Head Script
 
 To ensure the correct theme is applied _before_ the user sees the page, we cannot wait for Vue to load. We need a tiny, blocking script placed directly in the `<head>` of our `index.html`.
 
@@ -60,7 +60,7 @@ This ensures that by the time the browser paints the pixels, the correct CSS var
 
 ---
 
-## 2. State Synchronization: Pinia Hydration 🧠
+## 2. State Synchronization: Pinia Hydration
 
 Visuals are only half the battle. If we only changed the CSS class, our **Pinia Theme Store** would still think the app is in "Light Mode" (its default state). The first time the user tried to toggle the theme, the button logic would be inverted or broken.
 

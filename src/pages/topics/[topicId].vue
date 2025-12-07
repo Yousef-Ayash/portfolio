@@ -2,9 +2,10 @@
 import { computed, shallowRef, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useBlogStore } from "@/stores/blogStore";
-import { BookOpen, ArrowLeft, Layers, FileText } from "lucide-vue-next";
+import { BookOpen, Layers, FileText } from "lucide-vue-next";
 import GenericCard from "@/components/content/GenericCard.vue";
 import { useHead } from "@unhead/vue";
+import TopicLayout from "@/components/layouts/TopicLayout.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -57,83 +58,57 @@ useHead({
 </script>
 
 <template>
-	<div
+	<TopicLayout
 		v-if="topicData"
-		class="min-h-screen bg-light pb-20 pt-32 transition-colors duration-300 dark:bg-dark"
+		:title="topicData.title"
+		:frontmatter="{ ...topicData, type: 'topic' }"
 	>
-		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-			<router-link
-				to="/topics"
-				class="mb-8 inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-accent dark:text-gray-400"
-			>
-				<ArrowLeft class="h-4 w-4" /> Back to Topics
-			</router-link>
-
-			<div class="mb-12">
-				<div
-					class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent"
-				>
-					<BookOpen class="h-6 w-6" />
-				</div>
-				<h1 class="text-4xl font-bold text-gray-900 dark:text-white sm:text-5xl">
-					{{ topicData.title }}
-				</h1>
-				<p class="mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-300">
-					{{ topicData.description }}
-				</p>
+		<template #header-meta>
+			<div class="flex items-center gap-2 text-accent font-medium">
+				<BookOpen class="h-5 w-5" />
+				<span>Curated Series</span>
 			</div>
+			<p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl">
+				{{ topicData.description }}
+			</p>
+		</template>
 
-			<article v-if="MarkdownContent" class="prose-tech max-w-none mb-16">
-				<component :is="MarkdownContent" />
-			</article>
+		<component :is="MarkdownContent" v-if="MarkdownContent" />
 
-			<div v-if="topicData.projects.length > 0" class="mb-20">
+		<template #footer>
+			<div v-if="topicData.projects.length > 0" class="mb-16">
 				<h2
-					class="flex items-center gap-3 text-2xl font-bold text-gray-900 dark:text-white mb-8"
+					class="flex items-center gap-3 text-2xl font-bold text-gray-900 dark:text-white mb-6"
 				>
-					<Layers class="h-6 w-6 text-primary" />
-					Projects in this Series
+					<Layers class="h-6 w-6 text-primary" /> Projects
 				</h2>
-
 				<div class="grid gap-6 md:grid-cols-2">
 					<router-link
 						v-for="project in topicData.projects"
 						:key="project.slug"
 						:to="`/projects/${project.slug}`"
-						class="group flex flex-col rounded-2xl border border-gray-200 bg-white p-6 transition-all hover:border-primary/50 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900"
+						class="group flex flex-col rounded-2xl border border-gray-200 bg-white p-6 hover:border-primary/50 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900 transition-all"
 					>
-						<h3
-							class="text-xl font-bold text-gray-900 group-hover:text-primary dark:text-white"
-						>
+						<h3 class="text-xl font-bold group-hover:text-primary dark:text-white">
 							{{ project.title }}
 						</h3>
-						<p class="mt-2 flex-1 text-sm text-gray-600 dark:text-gray-400">
+						<p class="mt-2 text-sm text-gray-500 line-clamp-2">
 							{{ project.description }}
 						</p>
-						<div class="mt-4 text-sm font-medium text-primary">View Project &rarr;</div>
 					</router-link>
 				</div>
 			</div>
 
 			<div v-if="topicData.posts.length > 0">
 				<h2
-					class="flex items-center gap-3 text-2xl font-bold text-gray-900 dark:text-white mb-8"
+					class="flex items-center gap-3 text-2xl font-bold text-gray-900 dark:text-white mb-6"
 				>
-					<FileText class="h-6 w-6 text-accent" />
-					Notes & Articles
+					<FileText class="h-6 w-6 text-accent" /> Notes & Articles
 				</h2>
-
 				<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 					<GenericCard v-for="post in topicData.posts" :key="post.slug" :post="post" />
 				</div>
 			</div>
-
-			<div
-				v-if="topicData.projects.length === 0 && topicData.posts.length === 0"
-				class="text-center py-12 text-gray-500"
-			>
-				This topic is currently empty. Check back soon!
-			</div>
-		</div>
-	</div>
+		</template>
+	</TopicLayout>
 </template>

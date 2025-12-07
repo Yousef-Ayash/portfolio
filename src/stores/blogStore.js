@@ -96,6 +96,15 @@ export const useBlogStore = defineStore("blog", () => {
 				if (post.topic && topicMap[post.topic]) {
 					topicMap[post.topic].posts.push(post);
 					topicMap[post.topic].allItems.push(post);
+					post.topicData = {
+						title: topicMap[post.topic].title,
+						slug: post.topic,
+					};
+				}
+
+				if (post.topic && topicMap[post.topic]) {
+					topicMap[post.topic].posts.push(post);
+					topicMap[post.topic].allItems.push(post);
 				}
 
 				if (post.related && Array.isArray(post.related)) {

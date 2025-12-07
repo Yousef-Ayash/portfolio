@@ -24,7 +24,7 @@ This required three core changes, ensuring the build process could:
 
 ---
 
-## 1. Decoupling the Router 🧩
+## 1. Decoupling the Router
 
 The standard Vue 3 setup exports a fully initialized router instance. However, for SSG to work, it needs to be able to create the app and router internally during the build.
 
@@ -41,7 +41,7 @@ This provided the raw input needed for `vite-ssg` to take over.
 
 ---
 
-## 2. Dynamic Route Discovery with Node FS 🔍
+## 2. Dynamic Route Discovery with Node FS
 
 This was the important step for a file-system based CMS like mine. Since the routes are dynamic (e.g., `/blog/:slug`), Vite-SSG doesn’t know what values to plug into that slug until we tell it.
 
@@ -86,7 +86,7 @@ ssgOptions: {
 
 ---
 
-## 3. Data Transfer and Pinia Hydration 💧
+## 3. Data Transfer and Pinia Hydration
 
 Having the routes is not enough; the pre-rendered HTML would be blank without data. We need to load the Pinia store (`blogStore.loadPosts()`) during the build process and then transfer that populated state to the client.
 
