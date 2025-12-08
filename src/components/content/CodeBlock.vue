@@ -34,46 +34,32 @@ const hasTabs = computed(() => props.tabs && props.tabs.length > 0);
 		:class="{ 'line-numbers-enabled': showLineNumbers }"
 	>
 		<div
-			class="relative flex min-h-[44px] select-none items-center justify-between border-b border-gray-100/50 dark:border-gray-800/50 px-4 py-2"
+			class="relative flex min-h-[44px] items-center border-b border-gray-100/50 px-4 py-2 dark:border-gray-800/50"
+			:class="{ 'border-b-0': hasTabs }"
 		>
-			<div class="flex items-center gap-2">
-				<div class="flex gap-1.5">
-					<div class="h-3 w-3 rounded-full bg-[#ff5f56] shadow-sm"></div>
-					<div class="h-3 w-3 rounded-full bg-[#ffbd2e] shadow-sm"></div>
-					<div class="h-3 w-3 rounded-full bg-[#27c93f] shadow-sm"></div>
-				</div>
+			<div class="flex shrink-0 gap-1.5">
+				<div class="h-3 w-3 rounded-full bg-[#ff5f56] shadow-sm"></div>
+				<div class="h-3 w-3 rounded-full bg-[#ffbd2e] shadow-sm"></div>
+				<div class="h-3 w-3 rounded-full bg-[#27c93f] shadow-sm"></div>
 			</div>
 
-			<div class="absolute left-1/2 -translate-x-1/2 transform">
+			<div
+				v-if="fileName"
+				class="absolute inset-x-0 top-0 bottom-0 flex items-center justify-center pointer-events-none px-[25%] transition-all"
+			>
 				<span
-					v-if="fileName"
-					class="flex items-center gap-2 text-xs font-medium text-gray-500 dark:text-gray-400"
+					class="flex min-w-0 items-center gap-2 truncate text-xs font-medium text-gray-500 dark:text-gray-400"
+					:title="fileName"
 				>
-					<FileCode class="h-3.5 w-3.5 opacity-70" />
-					{{ fileName }}
+					<FileCode class="h-3.5 w-3.5 shrink-0 opacity-70" />
+					<span class="truncate">{{ fileName }}</span>
 				</span>
 			</div>
 
-			<div v-if="hasTabs" class="z-10 ml-6 flex flex-1 items-center gap-2">
-				<button
-					v-for="tab in tabs"
-					:key="tab"
-					@click="selectTab(tab)"
-					class="rounded-md px-2.5 py-1 text-xs font-medium transition-all"
-					:class="[
-						activeTab === tab
-							? 'bg-white text-primary shadow-sm dark:bg-gray-800 dark:text-primary-light'
-							: 'text-gray-500 hover:bg-gray-200/50 dark:text-gray-400 dark:hover:bg-gray-800/50',
-					]"
-				>
-					{{ tab }}
-				</button>
-			</div>
-
-			<div class="z-10 flex items-center gap-3 pl-4 ml-auto">
+			<div class="ml-auto flex shrink-0 items-center pl-2">
 				<span
 					v-if="language"
-					class="hidden font-mono text-[10px] font-bold uppercase tracking-wider text-gray-400 sm:block"
+					class="hidden font-mono text-[10px] font-bold uppercase tracking-wider text-gray-400 sm:block pr-3"
 				>
 					{{ language }}
 				</span>
@@ -84,6 +70,27 @@ const hasTabs = computed(() => props.tabs && props.tabs.length > 0);
 				>
 					<Check v-if="isCopied" class="h-3.5 w-3.5 text-green-500" />
 					<Copy v-else class="h-3.5 w-3.5" />
+				</button>
+			</div>
+		</div>
+
+		<div
+			v-if="hasTabs"
+			class="flex min-w-0 flex-1 overflow-hidden border-t border-b border-gray-100/50 px-4 dark:border-gray-800/50"
+		>
+			<div class="no-scrollbar flex w-full items-center gap-1 overflow-x-auto py-1">
+				<button
+					v-for="tab in tabs"
+					:key="tab"
+					@click="selectTab(tab)"
+					class="shrink-0 whitespace-nowrap rounded-md px-3 py-1 text-xs font-medium transition-all"
+					:class="[
+						activeTab === tab
+							? 'bg-white text-primary shadow-sm dark:bg-gray-800 dark:text-primary-light'
+							: 'text-gray-500 hover:bg-gray-200/50 dark:text-gray-400 dark:hover:bg-gray-800/50',
+					]"
+				>
+					{{ tab }}
 				</button>
 			</div>
 		</div>
@@ -100,3 +107,13 @@ const hasTabs = computed(() => props.tabs && props.tabs.length > 0);
 		</div>
 	</div>
 </template>
+
+<style scoped>
+.no-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+.no-scrollbar {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+</style>

@@ -61,10 +61,7 @@ useHead({
 							:src="topic.cover"
 							class="w-full h-full object-cover opacity-80"
 						/>
-						<div
-							v-else
-							class="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-10"
-						></div>
+						<div v-else class="absolute inset-0 opacity-10"></div>
 					</div>
 
 					<div class="flex flex-1 flex-col p-6">

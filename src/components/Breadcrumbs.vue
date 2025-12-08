@@ -1,9 +1,7 @@
 <script setup>
-import { computed } from "vue";
-import { useRoute } from "vue-router";
 import { ChevronRight, Home } from "lucide-vue-next";
 
-const props = defineProps({
+defineProps({
 	items: { type: Array, default: () => [] },
 	// items format: [{ label: 'Name', to: '/path' }]
 });

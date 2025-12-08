@@ -58,9 +58,7 @@ useHead({
 					<div
 						class="relative h-32 bg-gradient-to-r from-gray-100 to-gray-50 dark:from-gray-800 dark:to-gray-900/50"
 					>
-						<div
-							class="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-10"
-						></div>
+						<div class="absolute inset-0 opacity-10"></div>
 						<div class="absolute bottom-0 left-0 p-6">
 							<div
 								class="flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5 dark:bg-gray-800 dark:ring-gray-700"
